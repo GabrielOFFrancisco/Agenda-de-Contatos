@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const LoginSchema = new mongoose.Schema({
   email: { type: String, required: true },
@@ -9,40 +10,50 @@ const LoginSchema = new mongoose.Schema({
 const LoginModel = mongoose.model('Login', LoginSchema);
 
 class Login {
-  constructor(body){
+  constructor(body) {
     this.body = body;
     this.errors = [];
     this.user = null;
   }
 
-  async register(){
+  async register() {
     this.validate();
-    if(this.errors.length > 0) return;
+    if (this.errors.length > 0) return;
 
-    try{
+    await this.userExists();
+
+    if (this.errors.length > 0) return;
+
+    const salt = bcrypt.genSaltSync();
+    this.body.password = bcrypt.hashSync(this.body.password, salt);
+
+    try {
       this.user = await LoginModel.create(this.body);
-    } catch(e){
+    } catch (e) {
       console.log(e);
     }
   }
 
-  validate(){
+  async userExists() {
+    const user = await LoginModel.findOne({email: this.body.email});
+    if(user) this.errors.push('Usuário já existe.');
+  }
+
+  validate() {
     this.cleanUp();
 
-    //validação
-
     //validar email
-    if(!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido!');
+    if (!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido!');
 
     //validar senha
-    if(this.body.password.length < 3 || this.body.password.length > 50){
+    if (this.body.password.length < 3 || this.body.password.length > 50) {
       this.errors.push('A senha prexisa ter entre 3 e 50 caracteres.');
     }
   }
 
-  cleanUp(){
-    for(const key in this.body){
-      if(typeof this.body[key] !== 'string'){
+  cleanUp() {
+    for (const key in this.body) {
+      if (typeof this.body[key] !== 'string') {
         this.body[key] = '';
       }
     }
