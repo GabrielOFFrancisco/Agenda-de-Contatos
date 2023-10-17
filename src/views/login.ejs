@@ -9,6 +9,8 @@
           <h1 class="text-center">Criar conta ou entrar</h1>
           <p class="text-center lead">Faça login ou crie uma conta</p>
 
+          <%- include('includes/messages'); %>
+
           <div class="row my-5">
             <div class="col-lg mr-3">
               <h4>Faça seu cadastro</h4>
@@ -32,7 +34,7 @@
               <h4>Faça seu login</h4>
               <p class="my-3">Se já está registrado, realize o login abaixo:</p>
 
-              <form class="mx-auto mt-3" action="/login/login" method="POST">
+              <form action="/login/login" method="POST">
                 <input type="hidden" name="_csrf" value=<%= csrfToken %>>
                 <div class="form-group">
                   <label>Seu e-mail</label>
