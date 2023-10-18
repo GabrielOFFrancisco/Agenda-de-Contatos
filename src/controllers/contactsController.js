@@ -43,12 +43,12 @@ exports.edit = async (req, res) => {
 
         if (contacts.errors.length > 0) {
             req.flash('errors', contacts.errors);
-            req.session.save(() => res.redirect('/contacts/index/'));
+            req.session.save(() => res.redirect(req.get('referer')));
             return;
         }
 
         req.flash('success', 'Contato editado com sucesso!');
-        req.session.save(() => res.redirect(`/contacts/index/${contacts.contacts._id}`));
+        req.session.save(() => res.redirect('back'));
         return;
     } catch (e) {
         console.log(e);
