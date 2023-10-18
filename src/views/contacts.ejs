@@ -11,31 +11,36 @@
 
           <%- include('includes/messages'); %>
 
-            <form class="my-2" action="/contacts/register" method="POST">
-              <input type="hidden" name="_csrf" value=<%=csrfToken %>>
-              <div class="form-group">
-                <label>Nome</label>
-                <input type="text" class="form-control" name="name">
-              </div>
+            <% if(contacts._id) { %>
+              <form class="my-2" action="/contacts/edit/<%= contacts._id %>" method="POST">
+                <% } else { %>
+                  <form class="my-2" action="/contacts/register" method="POST">
+                  <% } %>
 
-              <div class="form-group">
-                <label>Sobrenome</label>
-                <input type="text" class="form-control" name="lastName">
-              </div>
+                    <input type="hidden" name="_csrf" value=<%=csrfToken %>>
+                    <div class="form-group">
+                      <label>Nome</label>
+                      <input value="<%= contacts.name %>" type="text" class="form-control" name="name">
+                    </div>
 
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control" name="email">
-              </div>
+                    <div class="form-group">
+                      <label>Sobrenome</label>
+                      <input value="<%= contacts.lastName %>" type="text" class="form-control" name="lastName">
+                    </div>
 
-              <div class="form-group">
-                <label>Telefone</label>
-                <input type="tel" class="form-control" name="telephone">
-              </div>
-              <button type="submit" class="btn btn-primary">Salvar</button>
-            </form>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input value="<%= contacts.email %>" type="email" class="form-control" name="email">
+                    </div>
 
-            <div class="col-lg-2"></div>
+                    <div class="form-group">
+                      <label>Telefone</label>
+                      <input value="<%= contacts.telephone %>" type="tel" class="form-control" name="telephone">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+              </form>
+
+              <div class="col-lg-2"></div>
         </div>
       </div>
 
