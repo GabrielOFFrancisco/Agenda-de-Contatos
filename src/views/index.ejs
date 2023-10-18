@@ -1,29 +1,45 @@
 <%- include('includes/head') %>
-<%- include('includes/nav') %>
+  <%- include('includes/nav') %>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-2"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2"></div>
 
-    <div class="col-lg-8 my-5">
-      <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Seus contatos estão abaixo</p>
+        <div class="col-lg-8 my-5">
+          <h1 class="text-center">Agenda</h1>
+          <p class="text-center lead">Seus contatos estão abaixo</p>
 
-      <%- include('includes/messages'); %>
+          <%- include('includes/messages'); %>
 
-      <div class="responsive-table"></div>
-      <table class="table my-3">
-        <tr>
-          <td>Gabriel</td>
-          <td>olimpio</td>
-          <td>8481812</td>
-          <td>email@email.com</td>
-        </tr>
-      </table>
+            <% if(contactsList.length> 0) {%>
+              <div class="responsive-table"></div>
+              <table class="table my-3">
+                <% contactsList.forEach(contacts=> { %>
+                  <tr>
+                    <td>
+                      <%= contacts.name %>
+                    </td>
+                    <td>
+                      <%= contacts.lastName %>
+                    </td>
+                    <td>
+                      <%= contacts.email %>
+                    </td>
+                    <td>
+                      <%= contacts.telephone %>
+                    </td>
+                    <td><a href="/contacts/index/<%= contacts._id %>">Editar</a></td>
+                    <td><a class="text-danger" href="/contacts/delete/<%= contacts._id %>">Excluir</a></td>
+                  </tr>
+                  <% }); %>
+              </table>
+        </div>
+        <% } else {%>
+          <p class="text-center lead"><strong>Não existem contatos na sua agenda.</strong></p>
+        <% } %>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
     </div>
 
-    <div class="col-lg-2"></div>
-  </div>
-</div>
-
-<%- include('includes/footer') %>
+    <%- include('includes/footer') %>
