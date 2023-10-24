@@ -1,6 +1,6 @@
 import validator from "validator";
 
-export default class Login{
+export default class Contacts{
     constructor(formClass){
         this.form = document.querySelector(formClass);
         this.errorMsg = document.querySelector('.errorMsg');
@@ -25,15 +25,17 @@ export default class Login{
         };
 
         const el = e.target;
+        const nameInput = el.querySelector('input[name="name"]');
+        const lastNameInput = el.querySelector('input[name="lastName"]');
         const emailInput = el.querySelector('input[name="email"]');
-        const passwordInput = el.querySelector('input[name="password"]');
+        const telephoneInput = el.querySelector('input[name="telephone"]');
 
         let error = false;
-
+        
         this.errorMsg.removeAttribute('alert');
 
-        if(!validator.isEmail(emailInput.value)){
-            let message = document.createTextNode('E-mail inválido');
+        if(!nameInput.value){
+            let message = document.createTextNode('Nome é um campo obrigatório');
             let p = document.createElement('p');
 
             p.appendChild(message); 
@@ -43,11 +45,23 @@ export default class Login{
             error = true;
         }
 
-        if(passwordInput.value.length < 3 || passwordInput.value.length > 50){
-            let message = document.createTextNode('A senha precisa ter entre 3 e 50 caracteres.');
+        if (!emailInput.value && !telephoneInput.value) {
+            let message = document.createTextNode('Pelo menos uma informação de contato precisa ser registrada: e-mail ou telefone');
+
             let p = document.createElement('p');
 
-            p.appendChild(message);
+            p.appendChild(message); 
+            p.classList.add('error');
+            this.errorMsg.classList.add('alert-danger');
+            this.errorMsg.appendChild(p);
+            error = true;
+        }
+
+        if(emailInput.value && !validator.isEmail(emailInput.value)){
+            let message = document.createTextNode('E-mail inválido');
+            let p = document.createElement('p');
+
+            p.appendChild(message); 
             p.classList.add('error');
             this.errorMsg.classList.add('alert-danger');
             this.errorMsg.appendChild(p);

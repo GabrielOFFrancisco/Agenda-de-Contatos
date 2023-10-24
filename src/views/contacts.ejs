@@ -9,12 +9,12 @@
           <h1 class="text-center">Contato</h1>
           <p class="text-center lead">Crie ou edite seu contato abaixo.</p>
 
-          <%- include('includes/messages'); %>
+          <div class="errorMsg col my-2 alert"><%- include('includes/messages'); %></div>
 
             <% if(contacts._id) { %>
-              <form class="my-2" action="/contacts/edit/<%= contacts._id %>" method="POST">
+              <form class="my-2 form-contacts" action="/contacts/edit/<%= contacts._id %>" method="POST">
                 <% } else { %>
-                  <form class="my-2" action="/contacts/register" method="POST">
+                  <form class="my-2 form-contacts" action="/contacts/register" method="POST">
                   <% } %>
 
                     <input type="hidden" name="_csrf" value=<%=csrfToken %>>
